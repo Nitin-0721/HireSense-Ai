@@ -1,0 +1,24 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+
+# Environment
+.env
+
+# Streamlit
+.streamlit/
+
+# Uploads
+backend/uploads/
+
+# Vector DB
+*.index
+faiss_db/
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
