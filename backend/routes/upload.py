@@ -1,5 +1,5 @@
 from fastapi import APIRouter, UploadFile, File
-import shutil
+import shutil #it copies the uploaded file from memory to disk
 import os
 
 from utils import extract_text, create_vector_store

@@ -54,7 +54,6 @@ Job Description:
 
     result = response.choices[0].message.content
 
-    # Remove markdown if the model wraps JSON in ```json ... ```
     result = result.replace("```json", "").replace("```", "").strip()
 
     return json.loads(result)

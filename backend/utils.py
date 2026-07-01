@@ -72,3 +72,5 @@ def retrieve(query, k=3):
             result.append(documents[idx])
 
     return "\n".join(result)
+
+#it contains the RAG engine, heart of the project
