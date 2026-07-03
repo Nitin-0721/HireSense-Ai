@@ -8,4 +8,39 @@ def chat_with_resume(question):
 
     answer = ask_llm(context, question)
 
+
     return answer
+
+# User
+
+# ↓
+
+# "What projects have I built?"
+
+# ↓
+
+# retrieve()
+
+# ↓
+
+# Relevant Resume Chunks
+
+# ↓
+
+# ask_llm()
+
+# ↓
+
+# Prompt Created
+
+# ↓
+
+# Groq
+
+# ↓
+
+# Answer Generated
+
+# ↓
+
+# Frontend
