@@ -848,11 +848,6 @@ Through this project I learned:
 
 Final Year B.Tech (ECE - IoT)  
 Madan Mohan Malaviya University of Technology, Gorakhpur
-
-- GitHub: https://github.com/your-username
-- LinkedIn: https://linkedin.com/in/your-profile
-- Portfolio: https://your-portfolio.com
-
 ---
 
 ⭐ If you found this project helpful, consider giving it a **Star** on GitHub.
