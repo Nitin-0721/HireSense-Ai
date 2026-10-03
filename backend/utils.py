@@ -1,18 +1,27 @@
-import fitz #reads pdf it is PyMuPDF
+import fitz  # PyMuPDF
 import faiss
-import numpy as np #to pass vector to faiss
+import numpy as np
 from sentence_transformers import SentenceTransformer
 
-model = SentenceTransformer("all-MiniLM-L6-v2") #generates 384 dimensional vector for each sentence, performs well for semantic search
+# Load the model only when it is actually needed
+model = None
 
-#this is for only one resume at a time,
+
+def get_model():
+    global model
+
+    if model is None:
+        model = SentenceTransformer("all-MiniLM-L6-v2")
+
+    return model
+
+
+# This is for only one resume at a time
 index = None
 documents = []
 resume_text = ""
 
-#everything here is a function becoz every files need them
 
-# extracts text from pdf and returns it as string sexy function
 def extract_text(pdf_path):
     text = ""
 
@@ -34,8 +43,7 @@ def chunk_text(text, chunk_size=500):
 
     return chunks
 
-#sbse jaruri function, it creates vector store from the resume text and stores it in faiss index
-#this function calls only once, by upload.py
+
 def create_vector_store(text):
 
     global index
@@ -45,26 +53,32 @@ def create_vector_store(text):
     resume_text = text
 
     documents = chunk_text(text)
-    
-    
-#step 4:where AI starts
-    embeddings = model.encode(documents)
+
+    # Load model only when resume is uploaded
+    embedding_model = get_model()
+
+    embeddings = embedding_model.encode(documents)
 
     dimension = embeddings.shape[1]
 
     index = faiss.IndexFlatL2(dimension)
-#faiss stores vector in flat32
-    index.add(np.array(embeddings).astype("float32"))
+
+    index.add(
+        np.array(embeddings).astype("float32")
+    )
 
 
 def retrieve(query, k=3):
 
     global index
 
-    if index is None: #if user not uploads any resume and ask question, then empty string will be returned
+    if index is None:
         return ""
 
-    query_embedding = model.encode([query])
+    # Load model only when chat/search is actually used
+    embedding_model = get_model()
+
+    query_embedding = embedding_model.encode([query])
 
     distances, indices = index.search(
         np.array(query_embedding).astype("float32"),
@@ -74,9 +88,8 @@ def retrieve(query, k=3):
     result = []
 
     for idx in indices[0]:
+
         if idx < len(documents):
             result.append(documents[idx])
 
     return "\n".join(result)
-
-#it contains the RAG engine, heart of the project
