@@ -3,9 +3,9 @@ import faiss
 import numpy as np #to pass vector to faiss
 from sentence_transformers import SentenceTransformer
 
-model = SentenceTransformer("all-MiniLM-L6-v2")
+model = SentenceTransformer("all-MiniLM-L6-v2") #generates 384 dimensional vector for each sentence, performs well for semantic search
 
-#this is for only one resume
+#this is for only one resume at a time,
 index = None
 documents = []
 resume_text = ""
