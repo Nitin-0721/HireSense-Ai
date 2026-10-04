@@ -1,7 +1,6 @@
 import fitz  # PyMuPDF
 import faiss
 import numpy as np
-from sentence_transformers import SentenceTransformer
 
 # Load the model only when it is actually needed
 model = None
@@ -11,6 +10,9 @@ def get_model():
     global model
 
     if model is None:
+        # Imported here so the heavy torch/transformers import
+        # does not slow down backend startup
+        from sentence_transformers import SentenceTransformer
         model = SentenceTransformer("all-MiniLM-L6-v2")
 
     return model
@@ -54,7 +56,6 @@ def create_vector_store(text):
 
     documents = chunk_text(text)
 
-    # Load model only when resume is uploaded
     embedding_model = get_model()
 
     embeddings = embedding_model.encode(documents)
@@ -75,7 +76,6 @@ def retrieve(query, k=3):
     if index is None:
         return ""
 
-    # Load model only when chat/search is actually used
     embedding_model = get_model()
 
     query_embedding = embedding_model.encode([query])
@@ -89,7 +89,7 @@ def retrieve(query, k=3):
 
     for idx in indices[0]:
 
-        if idx < len(documents):
+        if 0 <= idx < len(documents):
             result.append(documents[idx])
 
     return "\n".join(result)
